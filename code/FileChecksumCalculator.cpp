@@ -17,9 +17,20 @@ void FileChecksumCalculator::visit(const AudioFile & f)
 
 	// A COMPLETER:
 	// Iterer sur chacun des Chunk
-	//    - Calculer le hash du Chunk avec computeHash
-	//    - Combiner le checksum, le hash du Chunk et l'index du Chunk avec combineHash
-	//    - Conserver le resultat comme nouveau checksum
+	for (auto it = f.begin(); it != f.end() ; it++) {
+
+		int i = 0;	//pour l'index....
+		//    - Calculer le hash du Chunk avec computeHash
+		uint64_t res = computeChunkHash(f.getChunkSize(), it->get() );
+
+		//    - Combiner le checksum, le hash du Chunk et l'index du Chunk avec combineHash
+		uint64_t combined = combineHash(m_checkSum, res, i ); //comment on donne l'index avec un iterateur?
+
+		//    - Conserver le resultat comme nouveau checksum
+		m_checkSum = combined;
+		++i;
+	}
+
 }
 
 void FileChecksumCalculator::visit(const MemAudioFile & f)
@@ -33,10 +44,22 @@ void FileChecksumCalculator::visit(const MemAudioFile & f)
 
 	// A COMPLETER:
 	// Iterer sur chacun des Chunk
-	//    - Calculer le hash du Chunk (portion de buf) avec computeHash
-	//    - Combiner le checksum, le hash du Chunk et l'index du Chunk avec combineHash
-	//    - Conserver le resultat comme nouveau checksum
-	//    - Avancer dans buf
+	// auto it = f.begin(); it != f.end(); it++
+	for (int i = 0; i < nChunks; i++) {
+
+		//    - Calculer le hash du Chunk (portion de buf) avec computeHash
+		uint64_t res = computeChunkHash(chunkSize,buf);
+
+		//    - Combiner le checksum, le hash du Chunk et l'index du Chunk avec combineHash
+		uint64_t combined = combineHash(m_checkSum, res, i);
+
+		//    - Conserver le resultat comme nouveau checksum
+		m_checkSum = combined;
+
+		//    - Avancer dans buf
+		buf += chunkSize;
+
+	}
 }
 
 uint64_t FileChecksumCalculator::computeChunkHash(size_t chunkSize, const char* chunkData)

@@ -23,10 +23,21 @@ void FileStringFindReplace::visit(const AudioFile & f)
 {
 	// A COMPLETER:
 	// Iterer sur chaque Chunk du fichier d'entree
+	for(auto it = f.begin(); it != f.end(); it++){
+
 	//    - Construire un nouvel iterateur pointant a la fin du fichier de sortie
+
+
 	//    - Initialiser la memoire de l'iterateur avec le contenu du Chunk d'entree
+
+
 	//    - Remplacer les caracteres dans le Chunk de sortie avec findReplace
+
+
 	//    - Ajouter le nouveau Chunk au fichier de sortie
+
+
+	}
 }
 
 void FileStringFindReplace::visit(const MemAudioFile & f)
@@ -34,13 +45,27 @@ void FileStringFindReplace::visit(const MemAudioFile & f)
 	size_t chunkSize = f.getChunkSize();
 	size_t nChunks = f.getNumberChunks();
 	const char* buf = f.get() + f.getHeaderSize();
+
 	// A COMPLETER:
 	// Iterer sur chaque Chunk du fichier d'entree dans buf
+	for(int i=0; i<nChunks; i++){
+
 	//    - Construire un nouvel iterateur pointant a la fin du fichier de sortie
+
+
 	//    - Initialiser la memoire de l'iterateur avec le contenu du Chunk d'entree
+
+
 	//    - Remplacer les caracteres dans le Chunk de sortie avec findReplace
+
+
 	//    - Ajouter le nouveau Chunk au fichier de sortie
+
+
 	//    - Avancer dans buf
+
+
+	}
 }
 
 void FileStringFindReplace::findReplace(char * p_beg, char * p_end)
