@@ -1,6 +1,5 @@
 #include "TransformCommand.h"
 #include "MemAudioFile.h"
-
 TransformCommand::TransformCommand(std::shared_ptr<AbsTransform> t, const std::string& outFileName)
 	: m_transform(t), m_outFile(std::make_shared<MemAudioFile>(outFileName))
 {
@@ -15,6 +14,9 @@ void TransformCommand::execute(AbsAudioFile & f)
 {
 	// Declencher l'execution de la commande: transformer chacun des Chunk par la transformation
 	// A COMPLETER...
+	for (auto it = f.begin(); it != f.end(); ++it) {
+		m_transform->transform(it, *m_outFile);
+	}
 	
-	m_transform->transform(f.begin(),*m_outFile);
+	// Échoue silencieusement
 }
