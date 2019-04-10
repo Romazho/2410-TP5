@@ -3,6 +3,7 @@
 #include "FileStringFindReplace.h"
 #include "ChunkIterator.h"
 #include "MemAudioFile.h"
+#include <vector>
 
 FileStringFindReplace::FileStringFindReplace(const std::vector<char>& sOrig, const std::vector<char> & sNew, const std::string & outFileName)
 	: m_searchString(sOrig), m_replaceString(sNew), m_outFile(std::make_shared<MemAudioFile>(outFileName))
@@ -23,19 +24,23 @@ void FileStringFindReplace::visit(const AudioFile & f)
 {
 	// A COMPLETER:
 	// Iterer sur chaque Chunk du fichier d'entree
-	for(auto it = f.begin(); it != f.end(); it++){
+	for (auto it = f.begin(); it != f.end(); it++) {
 
-	//    - Construire un nouvel iterateur pointant a la fin du fichier de sortie
+		//    - Construire un nouvel iterateur pointant a la fin du fichier de sortie
+		auto fini = m_outFile->end();
 
+		//    - Initialiser la memoire de l'iterateur avec le contenu du Chunk d'entree
+		*fini = *it;
 
-	//    - Initialiser la memoire de l'iterateur avec le contenu du Chunk d'entree
+		//    - Remplacer les caracteres dans le Chunk de sortie avec findReplace
+		char* char_b = fini->get();
+		char* char_e = fini->get();
+		char_e += fini->size() - 1;
 
+		findReplace(char_b, char_e);
 
-	//    - Remplacer les caracteres dans le Chunk de sortie avec findReplace
-
-
-	//    - Ajouter le nouveau Chunk au fichier de sortie
-
+		//    - Ajouter le nouveau Chunk au fichier de sortie
+		m_outFile->addChunk(fini);
 
 	}
 }
@@ -48,22 +53,28 @@ void FileStringFindReplace::visit(const MemAudioFile & f)
 
 	// A COMPLETER:
 	// Iterer sur chaque Chunk du fichier d'entree dans buf
-	for(int i=0; i<nChunks; i++){
+	for (int i = 0; i < nChunks; i++) {
 
-	//    - Construire un nouvel iterateur pointant a la fin du fichier de sortie
+		//    - Construire un nouvel iterateur pointant a la fin du fichier de sortie
+		auto fini = m_outFile->end();
 
+		//    - Initialiser la memoire de l'iterateur avec le contenu du Chunk d'entree
+		Chunk tmpChunk(chunkSize, buf);
 
-	//    - Initialiser la memoire de l'iterateur avec le contenu du Chunk d'entree
+		*fini = tmpChunk;
 
+		//    - Remplacer les caracteres dans le Chunk de sortie avec findReplace
+		char* char_b = fini->get();
+		char* char_e = fini->get();
+		char_e += fini->size() - 1;
 
-	//    - Remplacer les caracteres dans le Chunk de sortie avec findReplace
+		findReplace(char_b, char_e);
 
+		//    - Ajouter le nouveau Chunk au fichier de sortie
+		m_outFile->addChunk(fini);
 
-	//    - Ajouter le nouveau Chunk au fichier de sortie
-
-
-	//    - Avancer dans buf
-
+		//    - Avancer dans buf
+		buf += chunkSize;
 
 	}
 }

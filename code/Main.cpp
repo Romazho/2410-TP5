@@ -17,6 +17,7 @@ int main() {
 		std::cerr << "Exception lancée" << std::endl;
 		std::cerr << e.what() << std::endl;
 	}
-
+	
+	system("pause");
 	return 0;
 }

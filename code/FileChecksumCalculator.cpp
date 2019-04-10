@@ -17,14 +17,14 @@ void FileChecksumCalculator::visit(const AudioFile & f)
 
 	// A COMPLETER:
 	// Iterer sur chacun des Chunk
+	int i = 0;
 	for (auto it = f.begin(); it != f.end() ; it++) {
 
-		int i = 0;	//pour l'index....
 		//    - Calculer le hash du Chunk avec computeHash
 		uint64_t res = computeChunkHash(f.getChunkSize(), it->get() );
 
 		//    - Combiner le checksum, le hash du Chunk et l'index du Chunk avec combineHash
-		uint64_t combined = combineHash(m_checkSum, res, i ); //comment on donne l'index avec un iterateur?
+		uint64_t combined = combineHash(m_checkSum, res, i );
 
 		//    - Conserver le resultat comme nouveau checksum
 		m_checkSum = combined;

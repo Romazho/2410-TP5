@@ -15,4 +15,6 @@ void TransformCommand::execute(AbsAudioFile & f)
 {
 	// Declencher l'execution de la commande: transformer chacun des Chunk par la transformation
 	// A COMPLETER...
+	
+	m_transform->transform(f.begin(),*m_outFile);
 }
