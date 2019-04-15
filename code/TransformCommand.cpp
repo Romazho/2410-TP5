@@ -17,6 +17,4 @@ void TransformCommand::execute(AbsAudioFile & f)
 	for (auto it = f.begin(); it != f.end(); ++it) {
 		m_transform->transform(it, *m_outFile);
 	}
-	
-	// Échoue silencieusement
 }
